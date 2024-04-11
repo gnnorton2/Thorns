@@ -1,0 +1,30 @@
+
+intro screen
+set up very similar to catch and slide intro screen
+basic instructions, background.png, and two labels with play and quit
+play will begin the game
+quit will close the application
+the background.png will have a couple plants featured in the game and the title of the game "Thorns" in big bubble letters, centered
+
+
+beginning game screen
+there will be three categories stacked vertically with space in between, there are labels as options next to each category
+
+Plant your seed with: Gnome Soil 	Raw Meat	Nothing
+
+
+Water your seed with: Water		Acid		Nothing
+
+
+Put your seed in:    Sunlight		Moonlight
+
+Each choice will be a label that can be clicked, highlighted, one choice per category
+
+There is a "Grow" button at the bottom of the screen that will "grow" the plant. Based on the combination of options, there are 18 different plants you can get
+Plant types: Death, Pixie, and Fungus
+
+
+Gameplay Screen
+the plant is at the center of the screen
+you have the option to rename the plant from its species name
+there is also an option to save the plant to reload it later, especially if the user wants to collect all 18 plants
