@@ -5,11 +5,22 @@
 
 import pygame, simpleGE
 
-
-
-    
+class Sun(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("sunshine.png")
+        self.setSize(150, 150)
+        self.position = (145, 275)
         
         
+
+class Moon(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("moon.png")
+        self.setSize(150, 150)
+        self.position = (495, 300)
+       
         
 class ChoiceOne(simpleGE.Sprite):
     def __init__(self, scene):
@@ -90,6 +101,7 @@ class FlowerPot(simpleGE.Sprite):
    # def process(self):
      #   if self.
 
+
 class Game(simpleGE.Scene):
     def __init__(self):
         super().__init__()
@@ -104,7 +116,8 @@ class Game(simpleGE.Scene):
         self.choiceOne = ChoiceOne(self)
         self.choiceTwo = ChoiceTwo(self)
         self.nothing = Nothing(self)
-        
+        self.sun = Sun(self)
+        self.moon = Moon(self)
         
         
       #  self.waterLabel = simpleGE.MultiLabel()
@@ -122,18 +135,22 @@ class Game(simpleGE.Scene):
                         self.flowerPot,
                         self.choiceOne,
                         self.choiceTwo,
-                        #self.storm
+                        self.sun,
+                        self.moon
+                            #self.storm
                         
                         
                         
                         
                         ]
         
-        
-       
+        self.plant = []
+        self.sun.hide()
+        self.moon.hide()
     def process(self):
-        plant = 0
+       # plant = []
         if self.seed.collidesWith(self.flowerPot):
+            
             self.seed.position = (0, 0)
             self.seed.setImage("invisible.png")
             self.choiceOne.setImage("wateringCan.png")
@@ -144,28 +161,87 @@ class Game(simpleGE.Scene):
             self.nothing.setSize(100, 100)
     
         if self.choiceOne.collidesWith(self.flowerPot):
-            plant += 3
+            self.plant.append("3")
             self.choiceOne.position = (145, 275)
             self.choiceOne.setImage("gnomesoil.png")
             self.choiceOne.moveSpeed = 0
             self.choiceTwo.setImage("rawmeat.png")
-            print(f"{plant}")
-        
+            print(f"{self.plant}")
+        if self.plant == ["3", "3"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        if self.plant == ["7", "3"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        if self.plant == ["1", "3"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+            
         if self.choiceTwo.collidesWith(self.flowerPot):
-            plant += 7
+            self.plant.append("7")
             self.choiceOne.setImage("gnomesoil.png")
             self.choiceTwo.moveSpeed = 0
             self.choiceTwo.setImage("rawmeat.png")
             self.choiceTwo.position = (495, 275)
-            print(f"{plant}")
+        if self.plant == ["7", "7"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        if self.plant == ["3", "7"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        if self.plant == ["1", "7"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        
+            print(f"{self.plant}")
         if self.nothing.clicked:
-            plant += 0
+            self.plant.append("1")
             self.nothing.position = (550, 75)
             self.choiceOne.setImage("gnomesoil.png")
             self.nothing.moveSpeed = 0
             self.choiceTwo.setImage("rawmeat.png")
+        if self.plant == ["1", "1"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        if self.plant == ["3", "1"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
+            self.moon.show()
+        if self.plant == ["7", "1"]:
+            self.choiceOne.hide()
+            self.choiceTwo.hide()
+            self.nothing.hide()
+            self.sun.show()
             
-        
+            self.moon.show()
+            
+        #if self.sun.clicked:
+            
+            
+     
         
           
             
