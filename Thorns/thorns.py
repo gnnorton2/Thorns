@@ -129,7 +129,10 @@ class Game(simpleGE.Scene):
                         
                         ]
         
+        
+       
     def process(self):
+        plant = 0
         if self.seed.collidesWith(self.flowerPot):
             self.seed.position = (0, 0)
             self.seed.setImage("invisible.png")
@@ -139,28 +142,31 @@ class Game(simpleGE.Scene):
             self.choiceTwo.setSize(150, 150)
             self.nothing.setImage("nothing.png")
             self.nothing.setSize(100, 100)
+    
         if self.choiceOne.collidesWith(self.flowerPot):
-            print("W")
+            plant += 3
             self.choiceOne.position = (145, 275)
             self.choiceOne.setImage("gnomesoil.png")
             self.choiceOne.moveSpeed = 0
             self.choiceTwo.setImage("rawmeat.png")
+            print(f"{plant}")
         
         if self.choiceTwo.collidesWith(self.flowerPot):
-            print("A")
+            plant += 7
             self.choiceOne.setImage("gnomesoil.png")
             self.choiceTwo.moveSpeed = 0
             self.choiceTwo.setImage("rawmeat.png")
             self.choiceTwo.position = (495, 275)
-            
-        if self.nothing.collidesWith(self.flowerPot):
-            print("N")
+            print(f"{plant}")
+        if self.nothing.clicked:
+            plant += 0
             self.nothing.position = (550, 75)
             self.choiceOne.setImage("gnomesoil.png")
             self.nothing.moveSpeed = 0
             self.choiceTwo.setImage("rawmeat.png")
             
-                
+        
+        
           
             
 
