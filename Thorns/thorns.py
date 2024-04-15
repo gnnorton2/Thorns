@@ -5,58 +5,87 @@
 
 import pygame, simpleGE
 
-#create labels for plant-growing categories, classes
-class WaterLabel(simpleGE.Label):
-    def __init__(self):
-        super().__init__()
-        self.text = "What will you water your plant with?"
-        self.center = (320, 50) #make this bigger
+
+
+    
         
-class ChooseWaterLabel(simpleGE.Label):
-    def __init__(self):
-        super().__init__()
-        self.text = "Water"
-        self.center = (145, 213)
         
-class WateringCan(simpleGE.Sprite):
+        
+class ChoiceOne(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
-        self.setImage("wateringCan.png")
+        self.setImage("invisible.png")
         self.setSize(150, 150)
         self.position = (145, 275)
+        self.moveSpeed = 0
         
-class ChooseAcidLabel(simpleGE.Label):
-    def __init__(self):
-        super().__init__()
-        self.text = "Acid"
-        self.center = (495, 213)
+    def process(self):
+        if self.clicked:
+            self.moveSpeed = 5
+        if self.isKeyPressed(pygame.K_LEFT):
+            self.x -= self.moveSpeed
+        if self.isKeyPressed(pygame.K_RIGHT):
+            self.x += self.moveSpeed
+        if self.isKeyPressed(pygame.K_UP):
+            self.y -= self.moveSpeed
+        if self.isKeyPressed(pygame.K_DOWN):
+            self.y += self.moveSpeed
         
-class AcidVial(simpleGE.Sprite):
+            #add A and D later
+           # if self.isKeyPressed(pygame.K_a):
+             #   self.x -= self.moveSpeed
+            #if self.isKeyPressed(pygame.K_d):
+              #  self.x += self.moveSpeed
+        
+
+        
+class ChoiceTwo(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
-        self.setImage("acid.png")
+        self.setImage("invisible.png")
         self.setSize(150, 150)
         self.position = (495, 300)
-        
-class ChooseNothingLabel(simpleGE.Label):
-    def __init__(self):
-        super().__init__()
-        self.text = "Nothing"
-        self.center = (320, 150)
+        self.moveSpeed = 0
+    def process(self):
+         if self.clicked:
+             self.moveSpeed = 5
+         if self.isKeyPressed(pygame.K_LEFT):
+             self.x -= self.moveSpeed
+         if self.isKeyPressed(pygame.K_RIGHT):
+             self.x += self.moveSpeed
+         if self.isKeyPressed(pygame.K_UP):
+             self.y -= self.moveSpeed
+         if self.isKeyPressed(pygame.K_DOWN):
+             self.y += self.moveSpeed
+
         
 class Nothing(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
-        self.setImage("nothing.png")
-        self.setSize(150,150)
-        self.position = (320, 250)
+        self.setImage("invisible.png")
+        self.setSize(100,100)
+        self.position = (550, 75)
 
 class Seed(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
         self.setImage("seed.png") #add growing scre
         self.setSize(150, 150)
-        self.position = (320, 240)
+        self.position = (320, 75)
+        
+    def process(self):
+        if self.isKeyPressed(pygame.K_SPACE):
+            self.dy = 5
+        
+            
+    
+        
+class FlowerPot(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("flowerPot.png")
+        self.setSize(150, 150)
+        self.position = (320, 400)
         
    # def process(self):
      #   if self.
@@ -67,28 +96,111 @@ class Game(simpleGE.Scene):
         self.setImage("grow.png")
        
         self.seed = Seed(self)
-        self.waterLabel = WaterLabel()
-        self.chooseWaterLabel = ChooseWaterLabel()
-        self.chooseAcidLabel = ChooseAcidLabel()
-        self.chooseNothingLabel = ChooseNothingLabel()
-        self.wateringCan = WateringCan(self)
-        self.acidVial = AcidVial(self)
+        self.flowerPot = FlowerPot(self)
+        #self.waterLabel = WaterLabel()
+        #self.chooseWaterLabel = ChooseWaterLabel()
+       # self.chooseAcidLabel = ChooseAcidLabel()
+        #self.chooseNothingLabel = ChooseNothingLabel()
+        self.choiceOne = ChoiceOne(self)
+        self.choiceTwo = ChoiceTwo(self)
         self.nothing = Nothing(self)
         
-        self.sprites = [self.seed,
-                        self.waterLabel,
-                        self.chooseWaterLabel,
-                        self.chooseAcidLabel,
-                        self.chooseNothingLabel,
-                        self.wateringCan,
-                        self.acidVial,
-                        self.nothing]
+        
+        
+      #  self.waterLabel = simpleGE.MultiLabel()
+      #  self.waterLabel.textLines = [
+      #      "Use the spacebar to drop the seed",
+       #     "then click on one option.",
+        #    " Use the arrow keys to move it",
+         #   "to the flower pot."
+          #  ]
+        #self.waterLabel.center = (320, 75)
+        #self.waterLabel.size = (350, 150)
+        
+        self.sprites = [self.nothing,
+                        self.seed,
+                        self.flowerPot,
+                        self.choiceOne,
+                        self.choiceTwo,
+                        #self.storm
+                        
+                        
+                        
+                        
+                        ]
+        
+    def process(self):
+        if self.seed.collidesWith(self.flowerPot):
+            self.seed.position = (0, 0)
+            self.seed.setImage("invisible.png")
+            self.choiceOne.setImage("wateringCan.png")
+            self.choiceOne.setSize(150, 150)
+            self.choiceTwo.setImage("acid.png")
+            self.choiceTwo.setSize(150, 150)
+            self.nothing.setImage("nothing.png")
+            self.nothing.setSize(100, 100)
+        if self.choiceOne.collidesWith(self.flowerPot):
+            print("W")
+            self.choiceOne.position = (145, 275)
+            self.choiceOne.setImage("gnomesoil.png")
+            self.choiceOne.moveSpeed = 0
+            self.choiceTwo.setImage("rawmeat.png")
+        
+        if self.choiceTwo.collidesWith(self.flowerPot):
+            print("A")
+            self.choiceOne.setImage("gnomesoil.png")
+            self.choiceTwo.moveSpeed = 0
+            self.choiceTwo.setImage("rawmeat.png")
+            self.choiceTwo.position = (495, 275)
+            
+        if self.nothing.collidesWith(self.flowerPot):
+            print("N")
+            self.nothing.position = (550, 75)
+            self.choiceOne.setImage("gnomesoil.png")
+            self.nothing.moveSpeed = 0
+            self.choiceTwo.setImage("rawmeat.png")
+            
+                
+          
+            
+
+        #newimage over sprite OR hide and put new images over top
+
+#class NextGame(simpleGE.Scene):
+ #   def __init__(self):
+  #      super().__init__()   
+  #      self.setImage("grow.png")
+        
+   #     self.flowerPot = FlowerPot(self)
+        
+   #     self.sprites = [self.flowerPot,
+                        
+                        
+                    
+                      #  ]
+            
+            
+    
         
         
         
 def main():
-  game = Game()
-  game.start()
-  
+   # keepGoing = True
+   # Game.start()
+   # while keepGoing:
+     game =Game()
+     game.start()
+        
+        
+        #game.start()
+      #  print(instructions.response)
+    
+      #  if Game.response == "Next":    
+        #    nextGame = NextGame()
+       #     nextGame.start()
+            
+      #  else:
+        #    keepGoing = False
+  #
 if __name__ == "__main__":
     main()
