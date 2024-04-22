@@ -3,7 +3,7 @@
     plant growing game
     Brielle"""
 
-import pygame, simpleGE
+import pygame, simpleGE, random
 
 
 
@@ -278,12 +278,29 @@ class GetPlant(simpleGE.Scene):
         self.rename = simpleGE.MultiLabel()
         self.rename.textLines = [
         "Congrats on your plant!",  
-        "Would you like to rename this plant?"
+        
             ]
+        
+        self.plantType = PlantType(self)
+        
+        self.sprites = [self.plantType,
+                        self.rename]
         
         self.rename.center = (320, 100)
         self.rename.size = (400, 150)
-        self.sprites = [self.rename]
+        
+        
+            
+        
+            
+class PlantType(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        image = random.randint(0, 14)
+        self.setImage(f"{image}.png")
+        print(f"{image}")
+        self.setSize(300, 300)
+        self.position = (320, 350)
         
         
         
