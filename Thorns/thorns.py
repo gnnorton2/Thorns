@@ -86,6 +86,7 @@ class Seed(simpleGE.Sprite):
     def process(self):
         if self.isKeyPressed(pygame.K_SPACE):
             self.dy = 5
+            
         
             
     
@@ -99,13 +100,19 @@ class FlowerPot(simpleGE.Sprite):
         
    # def process(self):
      #   if self.
-
+class Spacebar(simpleGE.Label):
+    def __init__(self):
+        super().__init__()
+        self.text = "Press spacebar"
+        self.center = (450, 75)
+    
 
 class Game(simpleGE.Scene):
     def __init__(self):
         super().__init__()
         self.setImage("grow.png")
-       
+        
+        
         self.seed = Seed(self)
         self.flowerPot = FlowerPot(self) 
         self.choiceOne = ChoiceOne(self)
@@ -113,6 +120,8 @@ class Game(simpleGE.Scene):
         self.nothing = Nothing(self)
         self.sun = Sun(self)
         self.moon = Moon(self)
+        
+        self.spacebar = Spacebar()
         
         self.btnGrow = simpleGE.Button()
         self.btnGrow.text = "Grow!"
@@ -129,7 +138,7 @@ class Game(simpleGE.Scene):
                         self.btnGrow,
                         self.choiceOne,
                         self.choiceTwo,
-                        
+                        self.spacebar
                            
                         
                         
@@ -144,6 +153,7 @@ class Game(simpleGE.Scene):
         
         if self.seed.collidesWith(self.flowerPot): 
             self.seed.hide()
+            self.spacebar.hide()
             
             self.choiceOne.reset()
             self.choiceOne.setImage("wateringCan.png")
@@ -236,8 +246,9 @@ class GetPlant(simpleGE.Scene):
         self.rename = simpleGE.MultiLabel()
         self.rename.textLines = [
         "Congrats on your plant!",  
-        "Press the spacebar to begin",
-        "the fight!"
+        "Click on it to view your",
+        "opponent, then click the",
+        "enemy to fight it!"
             ]
         
         self.rename.center = (320, 100)
@@ -328,7 +339,53 @@ class PlantType(simpleGE.Sprite):
         self.setSize(200, 200)
         self.position = (100, 350)
         
+class Intro(simpleGE.Scene):
+    def __init__(self):
+        super().__init__()
+        self.setImage("introScreen.png")
         
+        self.response = "Quit"
+        
+        
+        self.howTo = simpleGE.MultiLabel()
+        self.howTo.textLines = [
+            "Welcome to Thorns!",
+            "Click on one of each",
+            "options to create the",
+            "toughest plant!"
+            ]
+        self.howTo.center = (320, 400)
+        self.howTo.size = (200, 150)
+    
+        
+    
+        self.btnPlay = simpleGE.Button()
+        self.btnPlay.text = "Play"
+        self.btnPlay.center = (100, 30)
+        
+        self.btnQuit = simpleGE.Button()
+        self.btnQuit.text = "Quit"
+        self.btnQuit.center = (540, 30)
+        
+       
+        
+        self.sprites = [self.howTo,
+                        self.btnPlay,
+                        self.btnQuit,
+                        
+                        ]
+        
+      
+    
+        
+    def process(self):
+        if self.btnPlay.clicked:
+            self.response = "Play"
+            self.stop()
+            
+        if self.btnQuit.clicked:
+            self.response = "Quit"
+            self.stop()
        
 
     
@@ -346,13 +403,20 @@ class PlantType(simpleGE.Sprite):
         
         
 def main():
-  
-    game = Game()
-    game.start()
+    keepGoing = True
+    while keepGoing:
+        intro = Intro()
+        intro.start()
+        if intro.response == "Play":
+            game = Game()
+            game.start()
        
     
-    getPlant = GetPlant()
-    getPlant.start()
+            getPlant = GetPlant()
+            getPlant.start()
+            
+        else: 
+            keepGoing = False
     
     
         
