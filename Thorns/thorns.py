@@ -22,18 +22,6 @@ class Sun(simpleGE.Sprite):
         self.position = (145, 275)
         self.moveSpeed = 0
         self.setImage("sunshine.png")
-        
-    def process(self):
-        if self.clicked:
-            self.moveSpeed = 5
-        if self.isKeyPressed(pygame.K_LEFT):
-            self.x -= self.moveSpeed
-        if self.isKeyPressed(pygame.K_RIGHT):
-            self.x += self.moveSpeed
-        if self.isKeyPressed(pygame.K_UP):
-            self.y -= self.moveSpeed
-        if self.isKeyPressed(pygame.K_DOWN):
-            self.y += self.moveSpeed
     
 
 class Moon(simpleGE.Sprite):
@@ -50,17 +38,6 @@ class Moon(simpleGE.Sprite):
         self.moveSpeed = 5
         self.setImage("moon.png")
         
-    def process(self):
-        if self.clicked:
-            self.moveSpeed = 5
-        if self.isKeyPressed(pygame.K_LEFT):
-            self.x -= self.moveSpeed
-        if self.isKeyPressed(pygame.K_RIGHT):
-            self.x += self.moveSpeed
-        if self.isKeyPressed(pygame.K_UP):
-            self.y -= self.moveSpeed
-        if self.isKeyPressed(pygame.K_DOWN):
-            self.y += self.moveSpeed
 
     
 class ChoiceOne(simpleGE.Sprite):
@@ -76,24 +53,6 @@ class ChoiceOne(simpleGE.Sprite):
         self.position = (145, 275)
         self.moveSpeed = 0
         
-    def process(self):
-        if self.clicked:
-            self.moveSpeed = 5
-        if self.isKeyPressed(pygame.K_LEFT):
-            self.x -= self.moveSpeed
-        if self.isKeyPressed(pygame.K_RIGHT):
-            self.x += self.moveSpeed
-        if self.isKeyPressed(pygame.K_UP):
-            self.y -= self.moveSpeed
-        if self.isKeyPressed(pygame.K_DOWN):
-            self.y += self.moveSpeed
-        
-            #add A and D later
-           # if self.isKeyPressed(pygame.K_a):
-             #   self.x -= self.moveSpeed
-            #if self.isKeyPressed(pygame.K_d):
-              #  self.x += self.moveSpeed
-        
 
         
 class ChoiceTwo(simpleGE.Sprite):
@@ -108,18 +67,6 @@ class ChoiceTwo(simpleGE.Sprite):
         self.setSize(150, 150)
         self.position = (495, 300)
         self.moveSpeed = 0
-        
-    def process(self):
-         if self.clicked:
-             self.moveSpeed = 5
-         if self.isKeyPressed(pygame.K_LEFT):
-             self.x -= self.moveSpeed
-         if self.isKeyPressed(pygame.K_RIGHT):
-             self.x += self.moveSpeed
-         if self.isKeyPressed(pygame.K_UP):
-             self.y -= self.moveSpeed
-         if self.isKeyPressed(pygame.K_DOWN):
-             self.y += self.moveSpeed
 
         
 class Nothing(simpleGE.Sprite):
@@ -207,7 +154,7 @@ class Game(simpleGE.Scene):
             self.nothing.setImage("nothing.png")
          
     
-        if self.choiceOne.collidesWith(self.flowerPot):
+        if self.choiceOne.clicked:
             
             self.plant.append("3")
         
@@ -219,7 +166,7 @@ class Game(simpleGE.Scene):
             print(f"{self.plant}")
             
         
-        elif self.choiceTwo.collidesWith(self.flowerPot):
+        if self.choiceTwo.clicked:
             
             self.plant.append("7")
             
@@ -268,7 +215,18 @@ class Game(simpleGE.Scene):
         if self.btnGrow.clicked:
             print("grow clicked")
             self.stop()
-                
+        
+class HPLabel(simpleGE.Label):
+    def __init__(self):
+        super().__init__()
+        self.text = "HP: 30"
+        self.center = (100, 30)
+        
+class EnemyHPLabel(simpleGE.Label):
+    def __init__(self):
+        super().__init__()
+        self.text = "HP: 50"
+        self.center = (540, 30)
         
 class GetPlant(simpleGE.Scene):
     def __init__(self):
@@ -278,20 +236,88 @@ class GetPlant(simpleGE.Scene):
         self.rename = simpleGE.MultiLabel()
         self.rename.textLines = [
         "Congrats on your plant!",  
-        
+        "Press the spacebar to begin",
+        "the fight!"
             ]
-        
-        self.plantType = PlantType(self)
-        
-        self.sprites = [self.plantType,
-                        self.rename]
         
         self.rename.center = (320, 100)
         self.rename.size = (400, 150)
         
+      
         
+        self.plantType = PlantType(self)
+        self.enemy = Enemy(self)
+        
+        self.hPLabel = HPLabel()
+        self.hP = 30
+        
+        self.enemyHPLabel = EnemyHPLabel()
+        self.enemyHP = 50
+        
+        self.sprites = [self.plantType,
+                        self.rename,
+                        self.enemy,
+                        self.hPLabel,
+                        self.enemyHPLabel
+                        ]
+        
+        
+        
+       
+    def process(self):
+            if self.plantType.clicked:
+                self.rename.hide()
+                self.enemy.show()
+                
+           # if self.isKeyPressed(pygame.K_SPACE):
+                
+                 
+                
+            if self.enemy.clicked:
+                if random.randint(1, 100) < 70:
+                    enemyDamage = random.randint(1, 5)
+                    self.enemyHP -= enemyDamage 
+                    self.enemyHPLabel.text = f"Enemy HP: {self.enemyHP}"
+                    self.hPLabel.text = f"HP: {self.hP}"
+                    
+                if random.randint(1, 100) < 30:
+                    plantTypeDamage = random.randint(1, 7)
+                    self.hP -= plantTypeDamage
+                    self.hPLabel.text = f"HP: {self.hP}"
+                    if self.enemyHP <= 0:
+                            #self.congratulations.show()
+                        print("congratulations")
+                            #keepGoing = False
+                    if self.hP <= 0:
+                        print("I can't believe you lost...")
+                            #self.loser.show()
+                            #keepGoing = False
+                
+                    
+                #create loser and congratulations sprite, find a way to loop, create gnome soil, write game document
+                        
+                    
+                    
             
         
+        
+           
+      
+            
+        
+        
+class Enemy(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        randomEnemy = random.randint(0, 14)
+        self.setImage(f"{randomEnemy}.png")
+        self.position = (550, 240)
+        self.setSize = (50, 50) 
+        self.hide()          
+        
+      
+        
+   
             
 class PlantType(simpleGE.Sprite):
     def __init__(self, scene):
@@ -299,8 +325,20 @@ class PlantType(simpleGE.Sprite):
         image = random.randint(0, 14)
         self.setImage(f"{image}.png")
         print(f"{image}")
-        self.setSize(300, 300)
-        self.position = (320, 350)
+        self.setSize(200, 200)
+        self.position = (100, 350)
+        
+        
+       
+
+    
+
+   
+
+        
+        
+        
+        
         
         
         
@@ -311,9 +349,12 @@ def main():
   
     game = Game()
     game.start()
-        
+       
+    
     getPlant = GetPlant()
     getPlant.start()
+    
+    
         
 if __name__ == "__main__":
     main()
